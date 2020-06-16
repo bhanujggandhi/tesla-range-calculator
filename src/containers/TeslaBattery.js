@@ -1,25 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 import "./TeslaBattery.css";
-
 import TeslaNotice from "../components/TeslaNotice/TeslaNotice";
 import TeslaCar from "../components/TeslaCar/TeslaCar";
 import TeslaStats from "../components/TeslaStats/TeslaStats";
-import { getModelData } from "../services/BatteryService";
 import TeslaCounter from "../components/TeslaCounter/TeslaCounter";
 import TeslaClimate from "../components/TeslaClimate/TeslaClimate";
 import TeslaWheels from "../components/TeslaWheels/TeslaWheels";
+import { getModelData } from "../services/BatteryService";
 
-class TeslaBattery extends Component {
+class TeslaBattery extends React.Component {
   constructor(props) {
     super(props);
 
     this.calculateStats = this.calculateStats.bind(this);
+    this.statsUpdate = this.statsUpdate.bind(this);
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.updateCounterState = this.updateCounterState.bind(this);
     this.handleChangeClimate = this.handleChangeClimate.bind(this);
     this.handleChangeWheels = this.handleChangeWheels.bind(this);
-    this.statsUpdate = this.statsUpdate.bind(this);
 
     this.state = {
       carstats: [],
@@ -49,6 +48,7 @@ class TeslaBattery extends Component {
 
   statsUpdate() {
     const carModels = ["60", "60D", "75", "75D", "90D", "P100D"];
+    // Fetch model info from BatteryService and calculate then update state
     this.setState({
       carstats: this.calculateStats(carModels, this.state.config),
     });
@@ -60,13 +60,11 @@ class TeslaBattery extends Component {
 
   updateCounterState(title, newValue) {
     const config = { ...this.state.config };
-
-    //Update config state with new value
+    // update config state with new value
     title === "Speed"
       ? (config["speed"] = newValue)
       : (config["temperature"] = newValue);
-
-    // Update our state
+    // update our state
     this.setState({ config }, () => {
       this.statsUpdate();
     });
@@ -112,22 +110,26 @@ class TeslaBattery extends Component {
     }
   }
 
-  //Handle aircon & heating click event handler
+  // handle aircon & heating click event handler
   handleChangeClimate() {
     const config = { ...this.state.config };
     config["climate"] = !this.state.config.climate;
-    this.setState({ config });
+    this.setState({ config }, () => {
+      this.statsUpdate();
+    });
   }
 
+  // handle Wheels click event handler
   handleChangeWheels(size) {
     const config = { ...this.state.config };
     config["wheels"] = size;
-    this.setState({ config });
+    this.setState({ config }, () => {
+      this.statsUpdate();
+    });
   }
 
   render() {
     const { config, carstats } = this.state;
-
     return (
       <form className="tesla-battery">
         <h1>Range Per Charge</h1>

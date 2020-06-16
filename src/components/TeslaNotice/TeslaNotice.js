@@ -9,9 +9,9 @@ const TeslaNotice = () => (
       your range in our simulation model.
     </p>
     <p>
-      Vehicle range may vary depending on the vehicle configuartion, battery age
+      Vehicle range may vary depending on the vehicle configuration, battery age
       and condition, driving style and operating, environmental and climate
-      conditions
+      conditions.
     </p>
   </div>
 );

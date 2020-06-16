@@ -8,7 +8,7 @@ const LabelLists = (props) => {
   const LabelItems = sizes.map((size) => (
     <label
       key={size}
-      className={`tesla-wheels__itemitem tesla-wheels__item--${size} ${
+      className={`tesla-wheels__item tesla-wheels__item--${size} ${
         value === size ? "tesla-wheels__item--active" : ""
       }`}
     >

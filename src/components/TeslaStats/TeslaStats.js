@@ -4,7 +4,7 @@ import "./TeslaStats.css";
 
 const TeslaStats = (props) => {
   const listItems = props.carstats.map((stat) => (
-    <li>
+    <li key={stat.model}>
       <div
         className={`tesla-stats-icon tesla-stats-icon--${stat.model.toLowerCase()}`}
       ></div>
