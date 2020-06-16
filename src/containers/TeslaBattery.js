@@ -7,17 +7,19 @@ import TeslaStats from "../components/TeslaStats/TeslaStats";
 import { getModelData } from "../services/BatteryService";
 import TeslaCounter from "../components/TeslaCounter/TeslaCounter";
 import TeslaClimate from "../components/TeslaClimate/TeslaClimate";
+import TeslaWheels from "../components/TeslaWheels/TeslaWheels";
 
 class TeslaBattery extends Component {
   constructor(props) {
     super(props);
 
     this.calculateStats = this.calculateStats.bind(this);
-    this.statsUpdate = this.statsUpdate.bind(this);
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.updateCounterState = this.updateCounterState.bind(this);
     this.handleChangeClimate = this.handleChangeClimate.bind(this);
+    this.handleChangeWheels = this.handleChangeWheels.bind(this);
+    this.statsUpdate = this.statsUpdate.bind(this);
 
     this.state = {
       carstats: [],
@@ -117,6 +119,12 @@ class TeslaBattery extends Component {
     this.setState({ config });
   }
 
+  handleChangeWheels(size) {
+    const config = { ...this.state.config };
+    config["wheels"] = size;
+    this.setState({ config });
+  }
+
   render() {
     const { config, carstats } = this.state;
 
@@ -132,20 +140,24 @@ class TeslaBattery extends Component {
             increment={this.increment}
             decrement={this.decrement}
           />
-        </div>
-        <div className="tesla-climate-container cf">
-          <TeslaCounter
-            currentValue={this.state.config.temperature}
-            initValues={this.props.counterDefaultVal.temperature}
-            increment={this.increment}
-            decrement={this.decrement}
+          <div className="tesla-climate-container cf">
+            <TeslaCounter
+              currentValue={this.state.config.temperature}
+              initValues={this.props.counterDefaultVal.temperature}
+              increment={this.increment}
+              decrement={this.decrement}
+            />
+            <TeslaClimate
+              value={this.state.config.climate}
+              limit={this.state.config.temperature > 10}
+              handleChangeClimate={this.handleChangeClimate}
+            />
+          </div>
+          <TeslaWheels
+            value={this.state.config.wheels}
+            handleChangeWheels={this.handleChangeWheels}
           />
         </div>
-        <TeslaClimate
-          value={this.state.config.climate}
-          limit={this.state.config.temperature > 10}
-          handleChangeClimate={this.handleChangeClimate}
-        />
         <TeslaNotice />
       </form>
     );
