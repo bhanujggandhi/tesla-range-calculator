@@ -6,9 +6,7 @@ const TeslaStats = (props) => {
   const listItems = props.carstats.map((stat) => (
     <li>
       <div
-        className={
-          "tesla-stats-icon tesla-stats-icon--${stat.model.toLowerCase()}"
-        }
+        className={`tesla-stats-icon tesla-stats-icon--${stat.model.toLowerCase()}`}
       ></div>
       <p>{stat.miles}</p>
     </li>
